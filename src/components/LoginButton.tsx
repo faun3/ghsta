@@ -1,18 +1,21 @@
 "use client";
 
+import { GITHUB_OAUTH_PROVIDER } from "@/constants/oauth-providers";
 import { authClient } from "@/lib/auth-client";
+import { Button } from "@/components/shadcn/button";
+import { HOME_ROUTE } from "@/routes/routes";
 
-export default function LoginButton() {
+export function LoginButton() {
   return (
-    <button
+    <Button
       onClick={async () => {
         await authClient.signIn.social({
-          provider: "github",
-          callbackURL: "/",
+          provider: GITHUB_OAUTH_PROVIDER,
+          callbackURL: HOME_ROUTE,
         });
       }}
     >
       Sign in with GitHub
-    </button>
+    </Button>
   );
 }
