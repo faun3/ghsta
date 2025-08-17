@@ -2,7 +2,7 @@ import { GITHUB_OAUTH_PROVIDER } from "@/constants/oauth-providers";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
-import { Octokit } from "octokit";
+import { getOctokit } from "@/lib/octokit";
 
 export async function GET() {
   try {
@@ -35,9 +35,7 @@ export async function GET() {
     }
 
     // Initialize Octokit with the user's token
-    const octokit = new Octokit({
-      auth: userToken.accessToken,
-    });
+    const octokit = getOctokit(userToken.accessToken);
 
     // Fetch the user's repositories
     const repos = await octokit.rest.repos.listForAuthenticatedUser();
