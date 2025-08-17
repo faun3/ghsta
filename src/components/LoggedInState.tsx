@@ -8,14 +8,6 @@ export function LoggedInState() {
   return (
     <div>
       <p>{session?.user.id}</p>
-      <button
-        onClick={async () => {
-          if (session?.user.id) {
-          }
-        }}
-      >
-        Get Repos
-      </button>
     </div>
   );
 }
