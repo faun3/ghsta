@@ -1,7 +1,11 @@
+import { LoggedInState } from "@/components/LoggedInState";
+import LoginButton from "@/components/LoginButton";
+
 export default function Home() {
   return (
     <div>
-      <p>Pula</p>
+      <LoggedInState />
+      <LoginButton />
     </div>
   );
 }
