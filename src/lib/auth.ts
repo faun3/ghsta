@@ -1,8 +1,8 @@
 import "server-only";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { db } from "..";
 import * as schema from "@/db/schema";
+import { db } from "..";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -17,8 +17,8 @@ export const auth = betterAuth({
   },
   // This handles the db reads for the active session
   session: {
-      cookieCache: {
-          enabled: true,
-      }
-  }
+    cookieCache: {
+      enabled: true,
+    },
+  },
 });

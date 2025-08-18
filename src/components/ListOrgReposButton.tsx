@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { listOrgRepos } from "@/requests/list-org-repos";
 import { Button } from "./shadcn/button";
 import { Input } from "./shadcn/input";
 
@@ -17,12 +16,11 @@ export function ListOrgReposButton() {
         onChange={(e) => setOrg(e.target.value)}
       />
       <Button
-        onClick={async () => {
+        onClick={() => {
           if (!org.trim()) {
             console.error("Please enter a organization name");
             return;
           }
-          console.log(await listOrgRepos(org));
         }}
       >
         List Organization Repos

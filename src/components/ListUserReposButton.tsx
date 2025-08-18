@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { listUserRepos } from "@/requests/list-user-repos";
 import { Button } from "./shadcn/button";
 import { Input } from "./shadcn/input";
 
@@ -17,12 +16,11 @@ export function ListUserReposButton() {
         onChange={(e) => setUsername(e.target.value)}
       />
       <Button
-        onClick={async () => {
+        onClick={() => {
           if (!username.trim()) {
             console.error("Please enter a username");
             return;
           }
-          console.log(await listUserRepos(username));
         }}
       >
         List User Repos
