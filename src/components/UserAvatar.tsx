@@ -1,8 +1,8 @@
 "use client";
 
 import { Avatar } from "@radix-ui/react-avatar";
-import { AvatarFallback, AvatarImage } from "./shadcn/avatar";
 import { authClient } from "@/lib/auth-client";
+import { AvatarFallback, AvatarImage } from "./shadcn/avatar";
 import { Skeleton } from "./shadcn/skeleton";
 
 export function UserAvatar() {

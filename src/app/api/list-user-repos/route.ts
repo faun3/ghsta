@@ -12,10 +12,7 @@ export async function GET(req: Request) {
     const username = searchParams.get("username");
 
     if (!username) {
-      return NextResponse.json(
-        { error: "Missing required parameter: username" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Missing required parameter: username" }, { status: 400 });
     }
 
     const session = await auth.api.getSession({
@@ -23,23 +20,13 @@ export async function GET(req: Request) {
     });
 
     if (!session?.session?.userId) {
-      return NextResponse.json(
-        { error: "Unauthorized - No valid session found" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized - No valid session found" }, { status: 401 });
     }
 
-    const userToken = await getCachedAccessToken(
-      GITHUB_OAUTH_PROVIDER,
-      session.session.userId,
-      await headers()
-    );
+    const userToken = await getCachedAccessToken(GITHUB_OAUTH_PROVIDER, session.session.userId, await headers());
 
     if (!userToken?.accessToken) {
-      return NextResponse.json(
-        { error: "No GitHub access token found" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "No GitHub access token found" }, { status: 401 });
     }
 
     const octokit = getOctokit(userToken.accessToken);
@@ -54,22 +41,13 @@ export async function GET(req: Request) {
     if (error instanceof Error && "status" in error) {
       const status = error.status;
       if (status === 401) {
-        return NextResponse.json(
-          { error: "GitHub authentication failed" },
-          { status: 401 },
-        );
+        return NextResponse.json({ error: "GitHub authentication failed" }, { status: 401 });
       }
       if (status === 403) {
-        return NextResponse.json(
-          { error: "GitHub API rate limit exceeded" },
-          { status: 429 },
-        );
+        return NextResponse.json({ error: "GitHub API rate limit exceeded" }, { status: 429 });
       }
     }
 
-    return NextResponse.json(
-      { error: "Failed to fetch user repositories" },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: "Failed to fetch user repositories" }, { status: 500 });
   }
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { listUserOrgs } from "@/requests/list-user-orgs";
 import { Button } from "./shadcn/button";
 import { Input } from "./shadcn/input";
 
@@ -17,12 +16,11 @@ export function ListUserOrgsButton() {
         onChange={(e) => setUsername(e.target.value)}
       />
       <Button
-        onClick={async () => {
+        onClick={() => {
           if (!username.trim()) {
             console.error("Please enter a username");
             return;
           }
-          console.log(await listUserOrgs(username));
         }}
       >
         List Orgs

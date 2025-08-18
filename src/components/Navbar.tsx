@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { Menu, X, Github, User, Settings, LogOut } from "lucide-react";
+import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
 import { UserAvatar } from "./UserAvatar";
 import { Button } from "./shadcn/button";
 import {
@@ -11,8 +13,6 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "./ui/dropdown-menu";
-import Link from "next/link";
-import { authClient } from "@/lib/auth-client";
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,22 +34,13 @@ export function Navbar() {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8">
-          <Link
-            href="/"
-            className="text-sm font-medium transition-colors hover:text-primary"
-          >
+          <Link href="/" className="text-sm font-medium transition-colors hover:text-primary">
             Dashboard
           </Link>
-          <Link
-            href="/repos"
-            className="text-sm font-medium transition-colors hover:text-primary"
-          >
+          <Link href="/repos" className="text-sm font-medium transition-colors hover:text-primary">
             Repositories
           </Link>
-          <Link
-            href="/analytics"
-            className="text-sm font-medium transition-colors hover:text-primary"
-          >
+          <Link href="/analytics" className="text-sm font-medium transition-colors hover:text-primary">
             Analytics
           </Link>
         </div>
@@ -59,10 +50,7 @@ export function Navbar() {
           {/* User Avatar Dropdown - always visible */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                className="relative h-10 w-10 rounded-full p-0"
-              >
+              <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0">
                 <UserAvatar />
               </Button>
             </DropdownMenuTrigger>
@@ -91,18 +79,8 @@ export function Navbar() {
           </DropdownMenu>
 
           {/* Mobile menu button */}
-          <Button
-            variant="ghost"
-            size="sm"
-            className="md:hidden"
-            onClick={toggleMenu}
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? (
-              <X className="h-5 w-5" />
-            ) : (
-              <Menu className="h-5 w-5" />
-            )}
+          <Button variant="ghost" size="sm" className="md:hidden" onClick={toggleMenu} aria-label="Toggle menu">
+            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
         </div>
       </div>

@@ -1,8 +1,8 @@
 import "server-only";
-import { GITHUB_OAUTH_PROVIDER } from "@/constants/oauth-providers";
-import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
+import { GITHUB_OAUTH_PROVIDER } from "@/constants/oauth-providers";
+import { auth } from "@/lib/auth";
 import { getOctokit } from "@/lib/octokit";
 import { getCachedAccessToken } from "@/lib/token-cache";
 
@@ -12,10 +12,7 @@ export async function GET(req: Request) {
     const org = searchParams.get("org");
 
     if (!org) {
-      return NextResponse.json(
-        { error: "Missing required parameter: org" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Missing required parameter: org" }, { status: 400 });
     }
 
     const session = await auth.api.getSession({
@@ -23,23 +20,13 @@ export async function GET(req: Request) {
     });
 
     if (!session?.session?.userId) {
-      return NextResponse.json(
-        { error: "Unauthorized - No valid session found" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized - No valid session found" }, { status: 401 });
     }
 
-    const userToken = await getCachedAccessToken(
-      GITHUB_OAUTH_PROVIDER,
-      session.session.userId,
-      await headers()
-    );
+    const userToken = await getCachedAccessToken(GITHUB_OAUTH_PROVIDER, session.session.userId, await headers());
 
     if (!userToken?.accessToken) {
-      return NextResponse.json(
-        { error: "No GitHub access token found" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "No GitHub access token found" }, { status: 401 });
     }
 
     const octokit = getOctokit(userToken.accessToken);
@@ -47,7 +34,6 @@ export async function GET(req: Request) {
     const repos = await octokit.rest.repos.listForOrg({ org });
 
     return NextResponse.json(repos.data);
-
   } catch (error) {
     console.error("Error fetching organization repositories:", error);
 
@@ -55,22 +41,13 @@ export async function GET(req: Request) {
     if (error instanceof Error && "status" in error) {
       const status = error.status;
       if (status === 401) {
-        return NextResponse.json(
-          { error: "GitHub authentication failed" },
-          { status: 401 },
-        );
+        return NextResponse.json({ error: "GitHub authentication failed" }, { status: 401 });
       }
       if (status === 403) {
-        return NextResponse.json(
-          { error: "GitHub API rate limit exceeded" },
-          { status: 429 },
-        );
+        return NextResponse.json({ error: "GitHub API rate limit exceeded" }, { status: 429 });
       }
     }
 
-    return NextResponse.json(
-      { error: "Failed to fetch organization repositories" },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: "Failed to fetch organization repositories" }, { status: 500 });
   }
 }
