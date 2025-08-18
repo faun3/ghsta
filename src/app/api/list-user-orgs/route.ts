@@ -1,9 +1,9 @@
 import "server-only";
+import { GITHUB_OAUTH_PROVIDER } from "@/constants/oauth-providers";
+import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { getOctokit } from "@/lib/octokit";
-import { GITHUB_OAUTH_PROVIDER } from "@/constants/oauth-providers";
-import { auth } from "@/lib/auth";
 import { getCachedAccessToken } from "@/lib/token-cache";
 
 export async function GET(req: Request) {
@@ -44,13 +44,14 @@ export async function GET(req: Request) {
 
     const octokit = getOctokit(userToken.accessToken);
 
-    const repos = await octokit.rest.repos.listForUser({ username });
+    // Fetch user's orgs
+    const orgs = await octokit.rest.orgs.listForUser({ username });
 
-    return NextResponse.json(repos.data);
+    return NextResponse.json(orgs.data);
+
   } catch (error) {
-    console.error("Error fetching user repositories:", error);
+    console.error("Error fetching user organizations:", error);
 
-    // Handle specific GitHub API errors
     if (error instanceof Error && "status" in error) {
       const status = error.status;
       if (status === 401) {
@@ -68,8 +69,8 @@ export async function GET(req: Request) {
     }
 
     return NextResponse.json(
-      { error: "Failed to fetch user repositories" },
-      { status: 500 },
+      { error: "Failed to fetch organizations" },
+      { status: 500 }
     );
   }
 }

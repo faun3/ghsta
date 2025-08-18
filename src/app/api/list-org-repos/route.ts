@@ -1,19 +1,19 @@
 import "server-only";
+import { GITHUB_OAUTH_PROVIDER } from "@/constants/oauth-providers";
+import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { getOctokit } from "@/lib/octokit";
-import { GITHUB_OAUTH_PROVIDER } from "@/constants/oauth-providers";
-import { auth } from "@/lib/auth";
 import { getCachedAccessToken } from "@/lib/token-cache";
 
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
-    const username = searchParams.get("username");
+    const org = searchParams.get("org");
 
-    if (!username) {
+    if (!org) {
       return NextResponse.json(
-        { error: "Missing required parameter: username" },
+        { error: "Missing required parameter: org" },
         { status: 400 }
       );
     }
@@ -44,11 +44,12 @@ export async function GET(req: Request) {
 
     const octokit = getOctokit(userToken.accessToken);
 
-    const repos = await octokit.rest.repos.listForUser({ username });
+    const repos = await octokit.rest.repos.listForOrg({ org });
 
     return NextResponse.json(repos.data);
+
   } catch (error) {
-    console.error("Error fetching user repositories:", error);
+    console.error("Error fetching organization repositories:", error);
 
     // Handle specific GitHub API errors
     if (error instanceof Error && "status" in error) {
@@ -68,7 +69,7 @@ export async function GET(req: Request) {
     }
 
     return NextResponse.json(
-      { error: "Failed to fetch user repositories" },
+      { error: "Failed to fetch organization repositories" },
       { status: 500 },
     );
   }

@@ -1,7 +1,10 @@
 import { ListUserReposButton } from "@/components/ListUserReposButton";
+import { ListUserOrgsButton } from "@/components/ListUserOrgsButton";
+import { ListOrgReposButton } from "@/components/ListOrgReposButton";
 import { LoggedInState } from "@/components/LoggedInState";
 import { LoginButton } from "@/components/LoginButton";
 import { LogOutButton } from "@/components/LogOutButton";
+
 
 export default function Home() {
   return (
@@ -10,6 +13,8 @@ export default function Home() {
       <LoginButton />
       <LogOutButton />
       <ListUserReposButton />
+      <ListUserOrgsButton />
+      <ListOrgReposButton />
     </div>
   );
 }

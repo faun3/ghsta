@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { listUserRepos } from "@/requests/list-user-repos";
+import { listUserOrgs } from "@/requests/list-user-orgs";
 import { Button } from "./shadcn/button";
 import { Input } from "./shadcn/input";
 
-export function ListUserReposButton() {
+export function ListUserOrgsButton() {
   const [username, setUsername] = useState("");
 
   return (
@@ -22,10 +22,10 @@ export function ListUserReposButton() {
             console.error("Please enter a username");
             return;
           }
-          console.log(await listUserRepos(username));
+          console.log(await listUserOrgs(username));
         }}
       >
-        List User Repos
+        List Orgs
       </Button>
     </div>
   );
