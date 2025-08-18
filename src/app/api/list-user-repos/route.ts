@@ -1,8 +1,10 @@
+import "server-only";
 import { GITHUB_OAUTH_PROVIDER } from "@/constants/oauth-providers";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
-import { Octokit } from "octokit";
+import { getOctokit } from "@/lib/octokit";
+import { getCachedAccessToken } from "@/lib/token-cache";
 
 export async function GET() {
   try {
@@ -19,13 +21,20 @@ export async function GET() {
     }
 
     // Get the GitHub access token for the user
-    const userToken = await auth.api.getAccessToken({
-      body: {
-        providerId: GITHUB_OAUTH_PROVIDER,
-        userId: session.session.userId,
-      },
-      headers: await headers(),
-    });
+    // const userToken = await auth.api.getAccessToken({
+    //   body: {
+    //     providerId: GITHUB_OAUTH_PROVIDER,
+    //     userId: session.session.userId,
+    //   },
+    //   headers: await headers(),
+    // });
+
+    const userToken = await getCachedAccessToken(
+      GITHUB_OAUTH_PROVIDER,
+      session.session.userId,
+      await headers()
+    );
+
 
     if (!userToken?.accessToken) {
       return NextResponse.json(
@@ -35,9 +44,7 @@ export async function GET() {
     }
 
     // Initialize Octokit with the user's token
-    const octokit = new Octokit({
-      auth: userToken.accessToken,
-    });
+    const octokit = getOctokit(userToken.accessToken);
 
     // Fetch the user's repositories
     const repos = await octokit.rest.repos.listForAuthenticatedUser();
