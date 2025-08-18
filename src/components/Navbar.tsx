@@ -4,15 +4,15 @@ import { useState } from "react";
 import { Menu, X, Github, User, Settings, LogOut } from "lucide-react";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
-import { UserAvatar } from "./UserAvatar";
-import { Button } from "./shadcn/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
-} from "./ui/dropdown-menu";
+} from "@/components/shadcn/dropdown-menu";
+import { UserAvatar } from "./UserAvatar";
+import { Button } from "./shadcn/button";
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
