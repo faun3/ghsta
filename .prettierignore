@@ -1,3 +1,4 @@
 node_modules
 drizzle
-docker-compose.yaml
+*.yaml
+*.yml
