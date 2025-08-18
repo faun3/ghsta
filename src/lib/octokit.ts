@@ -1,4 +1,6 @@
+import "server-only";
 import { Octokit } from "octokit";
+import { GITHUB_API_VERSION } from "@/constants/api-versions";
 
 let octokitInstance: Octokit | null = null;
 
@@ -17,7 +19,7 @@ export function getOctokit(token: string): Octokit {
       auth: token,
       request: {
         headers: {
-          "X-GitHub-Api-Version": "2022-11-28",
+          "X-GitHub-Api-Version": GITHUB_API_VERSION,
         },
       },
     });

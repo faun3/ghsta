@@ -1,3 +1,4 @@
+import "server-only";
 import { GITHUB_OAUTH_PROVIDER } from "@/constants/oauth-providers";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";

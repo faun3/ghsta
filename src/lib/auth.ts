@@ -1,3 +1,4 @@
+import "server-only";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "..";
@@ -18,7 +19,6 @@ export const auth = betterAuth({
   session: {
       cookieCache: {
           enabled: true,
-          maxAge: 5 * 60 // 5 minutes
       }
   }
 });
