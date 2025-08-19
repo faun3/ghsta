@@ -4,6 +4,8 @@ import { GITHUB_API_VERSION } from "@/constants/api-versions";
 
 let octokitInstance: Octokit | null = null;
 
+// TODO: we need to handle octokit errors https://docs.github.com/en/rest/guides/scripting-with-the-rest-api-and-javascript?apiVersion=2022-11-28#catching-errors
+
 /**
  * Returns a singleton Octokit instance for a given token
  * @param token - GitHub user or app access token
