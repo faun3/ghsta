@@ -31,9 +31,9 @@ export async function GET(req: Request) {
 
     const octokit = getOctokit(userToken.accessToken);
 
-    const repos = await octokit.rest.repos.listForOrg({ org });
+    const repos = await octokit.paginate(octokit.rest.repos.listForOrg, { org });
 
-    return NextResponse.json(repos.data);
+    return NextResponse.json(repos);
   } catch (error) {
     console.error("Error fetching organization repositories:", error);
 

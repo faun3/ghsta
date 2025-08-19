@@ -1,6 +1,7 @@
 import "server-only";
 import { Octokit } from "octokit";
-import { GITHUB_API_VERSION } from "@/constants/api-versions";
+import { GITHUB_API_VERSION } from "@/constants/octokit-constants";
+import { MAX_PAGE_SIZE } from "@/constants/octokit-constants";
 
 let octokitInstance: Octokit | null = null;
 
@@ -20,6 +21,9 @@ export function getOctokit(token: string): Octokit {
       request: {
         headers: {
           "X-GitHub-Api-Version": GITHUB_API_VERSION,
+        },
+        params: {
+          per_page: MAX_PAGE_SIZE,
         },
       },
     });

@@ -32,9 +32,9 @@ export async function GET(req: Request) {
     const octokit = getOctokit(userToken.accessToken);
 
     // Fetch user's orgs
-    const orgs = await octokit.rest.orgs.listForUser({ username });
+    const orgs = await octokit.paginate(octokit.rest.orgs.listForUser, { username });
 
-    return NextResponse.json(orgs.data);
+    return NextResponse.json(orgs);
   } catch (error) {
     console.error("Error fetching user organizations:", error);
 
